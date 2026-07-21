@@ -6,18 +6,18 @@ export function annotateStackTargets(
 ): void {
   document.querySelectorAll('.dh-stack-badge').forEach(el => el.remove());
 
-  const rosterByTeam = new Map<string, { wrTe: string[]; qb: string[] }>();
+  const rosterByTeam = new Map<string, { skill: string[]; qb: string[] }>();
   for (const pick of roster) {
     if (!pick.team) continue;
     let entry = rosterByTeam.get(pick.team);
     if (!entry) {
-      entry = { wrTe: [], qb: [] };
+      entry = { skill: [], qb: [] };
       rosterByTeam.set(pick.team, entry);
     }
     if (pick.position === 'QB') {
       entry.qb.push(pick.name);
-    } else if (pick.position === 'WR' || pick.position === 'TE') {
-      entry.wrTe.push(pick.name);
+    } else if (pick.position === 'RB' || pick.position === 'WR' || pick.position === 'TE') {
+      entry.skill.push(pick.name);
     }
   }
 
@@ -26,7 +26,7 @@ export function annotateStackTargets(
   const teamLabels = new Map<string, string>();
   for (const [team, entry] of rosterByTeam) {
     const parts: string[] = [];
-    if (entry.wrTe.length > 0) parts.push(entry.wrTe.join(', '));
+    if (entry.skill.length > 0) parts.push(entry.skill.join(', '));
     if (entry.qb.length > 0) parts.push(entry.qb.join(', '));
     if (parts.length > 0) teamLabels.set(team, `(${parts.join(', ')})`);
   }

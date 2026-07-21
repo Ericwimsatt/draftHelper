@@ -4,8 +4,8 @@ export function calcStackTargets(
   roster: RosterPick[],
   available: Player[]
 ): StackTarget[] {
-  const rosteredWrTe = roster.filter(
-    (p) => p.position === 'WR' || p.position === 'TE'
+  const rosteredSkill = roster.filter(
+    (p) => p.position === 'RB' || p.position === 'WR' || p.position === 'TE'
   );
 
   const allPlayers: Player[] = [
@@ -15,11 +15,11 @@ export function calcStackTargets(
 
   const targets: StackTarget[] = [];
 
-  for (const wrTe of rosteredWrTe) {
-    let team = wrTe.team;
+  for (const rostered of rosteredSkill) {
+    let team = rostered.team;
 
     if (!team) {
-      team = guessTeam(wrTe.name, allPlayers) ?? '';
+      team = guessTeam(rostered.name, allPlayers) ?? '';
     }
 
     if (!team) continue;
@@ -31,7 +31,7 @@ export function calcStackTargets(
     if (teamQb) {
       targets.push({
         qb: teamQb,
-        wrTe: { ...wrTe, rank: 0, adp: 0, isDrafted: true, byeWeek: wrTe.byeWeek },
+        rostered: { ...rostered, rank: 0, adp: 0, isDrafted: true, byeWeek: rostered.byeWeek },
         team,
         qbAdp: teamQb.adp,
       });

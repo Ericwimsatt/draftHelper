@@ -7,12 +7,12 @@ interface Props {
 }
 
 export default function OpponentsTable({ roster }: Props) {
-  const first5 = roster.slice(0, 5);
+  const first8 = roster.slice(0, 8);
 
   return (
     <div style={styles.container}>
       <h3 style={styles.heading}>Playoff Opponents (Wk 15-17)</h3>
-      {first5.length === 0 ? (
+      {first8.length === 0 ? (
         <p style={styles.empty}>Draft players to see their playoff schedule</p>
       ) : (
         <table style={styles.table}>
@@ -25,7 +25,7 @@ export default function OpponentsTable({ roster }: Props) {
             </tr>
           </thead>
           <tbody>
-            {first5.map((pick, i) => {
+            {first8.map((pick, i) => {
               const opps = pick.team ? getOpponents(pick.team) : null;
               return (
                 <tr key={i}>

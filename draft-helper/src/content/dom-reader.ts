@@ -21,6 +21,7 @@ export function readRoster(): RosterPick[] {
   containers.forEach((c, i) => console.log(`  [${i}]: class="${c.className}"`));
 
   const picks: RosterPick[] = [];
+  let pickNumber = 0;
 
   containers.forEach((container, ci) => {
     const bodies = container.querySelectorAll('.BaseTable__body');
@@ -36,51 +37,51 @@ export function readRoster(): RosterPick[] {
       rows.forEach((row, rowIdx) => {
         const cells = row.querySelectorAll('.BaseTable__row-cell');
         console.log(`  Row [${ci}][${bi}][${rowIdx}]: ${cells.length} cells`);
+        cells.forEach((c, j) => console.log(`    cell[${j}]: "${(c.textContent ?? '').trim().slice(0, 50)}"`));
 
-        cells.forEach((c, j) => console.log(`    cell[${j}]: "${(c.textContent ?? '').trim().slice(0, 40)}"`));
+        let name: string, position: Position | null, team: string, byeText: string;
 
-        let nameCell: Element | null = null;
-        cells.forEach((c) => {
-          if (c.querySelector('.PlayerCell_player-name')) nameCell = c;
-        });
-        if (!nameCell) {
-          console.log(`    no player name cell — skipping`);
+        const nameCell = Array.from(cells).find(c => c.querySelector('.PlayerCell_player-name'));
+        if (nameCell) {
+          const posEl = nameCell.querySelector('.player-position');
+          const nameEl = nameCell.querySelector('.PlayerCell_player-name');
+          const teamEl = nameCell.querySelector('.PlayerCell_player-team div');
+          position = posEl ? parsePosition(posEl.textContent ?? '') : null;
+          name = nameEl?.textContent?.trim() ?? '';
+          team = teamEl?.textContent?.trim() ?? '';
+
+          const allNums = Array.from(cells).map(c => c.textContent?.trim() ?? '');
+          const found = allNums.find(t => { const n = parseInt(t, 10); return n >= 1 && n <= 14; });
+          byeText = found ?? '';
+          console.log(`    PlayerCell format: pos="${position}" name="${name}" team="${team}" bye="${byeText}"`);
+        } else if (cells.length >= 2) {
+          position = parsePosition(cells[0]?.textContent?.trim() ?? '');
+          name = cells[1]?.textContent?.trim() ?? '';
+          team = '';
+          const allNums = Array.from(cells).map(c => c.textContent?.trim() ?? '');
+          const found = allNums.find(t => { const n = parseInt(t, 10); return n >= 1 && n <= 14; });
+          byeText = found ?? '';
+          console.log(`    Simple format: pos="${position}" name="${name}" team="${team}" bye="${byeText}"`);
+        } else {
+          console.log(`    Unrecognized row format — skipping`);
           return;
         }
 
-        const posEl = nameCell.querySelector('.player-position');
-        const nameEl = nameCell.querySelector('.PlayerCell_player-name');
-        const teamEl = nameCell.querySelector('.PlayerCell_player-team div');
+        if (!position || !name) {
+          console.log(`    Missing position or name — skipping`);
+          return;
+        }
 
-        const position = posEl ? parsePosition(posEl.textContent ?? '') : null;
-        const name = nameEl?.textContent?.trim() ?? '';
-        const team = teamEl?.textContent?.trim() ?? '';
-        console.log(`    pos="${posEl?.textContent?.trim() ?? ''}" name="${name}" team="${team}" posOk=${!!position}`);
-
-        if (!position || !name) return;
-
-        const numericTexts: string[] = [];
-        cells.forEach((c) => {
-          const t = c.textContent?.trim() ?? '';
-          if (/^\d{1,3}$/.test(t)) numericTexts.push(t);
-        });
-        const byeText = numericTexts.find((t) => {
-          const n = parseInt(t, 10);
-          return n >= 1 && n <= 14;
-        }) ?? '';
-        const otherNums = numericTexts.filter((t) => t !== byeText);
-        const roundText = otherNums[0] ?? '';
-        const pickText = otherNums[1] ?? '';
-
-        console.log(`    bye="${byeText}" round="${roundText}" pick="${pickText}"`);
-
+        pickNumber++;
         picks.push({
-          round: parseInt(roundText, 10) || 0,
-          pick: parseInt(pickText, 10) || 0,
+          round: 0,
+          pick: 0,
+          overallPick: pickNumber,
           name,
           position,
           team,
           byeWeek: parseByeWeek(byeText),
+          adp: 0,
         });
       });
     });

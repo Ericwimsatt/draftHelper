@@ -13,7 +13,7 @@
     "declaration": false,
     "outDir": "dist",
     "rootDir": "src",
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "chrome"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

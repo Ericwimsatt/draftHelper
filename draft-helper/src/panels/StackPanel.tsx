@@ -11,7 +11,7 @@ export default function StackPanel({ targets }: Props) {
     return (
       <div style={styles.container}>
         <h3 style={styles.heading}>Stack Targets</h3>
-        <p style={styles.empty}>Draft WRs/TEs to see QB stack recommendations</p>
+        <p style={styles.empty}>Draft RBs/WRs/TEs to see QB stack recommendations</p>
       </div>
     );
   }
@@ -25,7 +25,7 @@ export default function StackPanel({ targets }: Props) {
             {t.qb.name} ({t.team})
           </span>
           <span style={styles.with}>→</span>
-          <span style={styles.wrTe}>{t.wrTe.name}</span>
+          <span style={styles.rostered}>{t.rostered.name}</span>
           <span style={styles.adp}>ADP: {t.qb.adp} (Rd {adpToRound(t.qb.adp)})</span>
         </div>
       ))}
@@ -62,7 +62,7 @@ const styles: Record<string, React.CSSProperties> = {
   with: {
     color: '#666',
   },
-  wrTe: {
+  rostered: {
     color: '#e0e0e0',
   },
   adp: {

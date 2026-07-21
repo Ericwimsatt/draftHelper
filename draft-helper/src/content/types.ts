@@ -13,15 +13,17 @@ export interface Player {
 export interface RosterPick {
   round: number;
   pick: number;
+  overallPick: number;
   name: string;
   position: Position;
   team: string;
   byeWeek: number;
+  adp: number;
 }
 
 export interface StackTarget {
   qb: Player;
-  wrTe: Player;
+  rostered: Player;
   team: string;
   qbAdp: number;
 }

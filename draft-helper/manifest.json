@@ -3,6 +3,7 @@
   "name": "Draft Helper",
   "version": "1.0.0",
   "description": "Overlay for DraftKings Bestball draft: roster tracker, stacking targets, draft capital chart, and opponent schedule.",
+  "permissions": ["storage"],
   "host_permissions": ["https://www.draftkings.com/*"],
   "content_scripts": [
     {

@@ -13,7 +13,7 @@ describe('calcStackTargets', () => {
     const targets = calcStackTargets(roster, available);
     expect(targets).toHaveLength(1);
     expect(targets[0].qb.name).toBe('Joe Burrow');
-    expect(targets[0].wrTe.name).toBe('Ja\'Marr Chase');
+    expect(targets[0].rostered.name).toBe('Ja\'Marr Chase');
     expect(targets[0].team).toBe('CIN');
   });
 
@@ -25,6 +25,20 @@ describe('calcStackTargets', () => {
       { rank: 1, name: 'Josh Allen', position: 'QB', team: 'BUF', adp: 25.4, byeWeek: 7, isDrafted: false },
     ];
     expect(calcStackTargets(roster, available)).toHaveLength(0);
+  });
+
+  it('suggests QB when RB is rostered', () => {
+    const roster: RosterPick[] = [
+      { round: 1, pick: 3, name: 'Christian McCaffrey', position: 'RB', team: 'SF', byeWeek: 9 },
+    ];
+    const available: Player[] = [
+      { rank: 1, name: 'Brock Purdy', position: 'QB', team: 'SF', adp: 80.2, byeWeek: 9, isDrafted: false },
+    ];
+    const targets = calcStackTargets(roster, available);
+    expect(targets).toHaveLength(1);
+    expect(targets[0].qb.name).toBe('Brock Purdy');
+    expect(targets[0].rostered.name).toBe('Christian McCaffrey');
+    expect(targets[0].team).toBe('SF');
   });
 
   it('sorts by ADP ascending', () => {

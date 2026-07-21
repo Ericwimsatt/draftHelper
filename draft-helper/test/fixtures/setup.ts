@@ -107,16 +107,9 @@ export function setupDraftPage() {
     <div class="RosterTable_roster-body">
       <div class="BaseTable__body">
         <div class="BaseTable__row">
-          <div class="BaseTable__row-cell">
-            <div class="PlayerCell_player-cell">
-              <div class="player-position">WR</div>
-              <div class="PlayerCell_player-name">Ja'Marr Chase</div>
-              <div class="PlayerCell_player-team"><div>CIN</div></div>
-            </div>
-          </div>
+          <div class="BaseTable__row-cell">WR</div>
+          <div class="BaseTable__row-cell">Ja'Marr Chase</div>
           <div class="BaseTable__row-cell">6</div>
-          <div class="BaseTable__row-cell">1</div>
-          <div class="BaseTable__row-cell">3</div>
         </div>
       </div>
     </div>

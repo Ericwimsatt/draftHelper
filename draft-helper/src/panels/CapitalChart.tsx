@@ -4,6 +4,16 @@ import { draftCapital } from '../utils/capital';
 
 interface Props {
   roster: RosterPick[];
+  userPickNumber: number;
+  useAdp: boolean;
+}
+
+const TEAMS = 12;
+
+function overallFromUserPick(rosterIndex: number, userPick: number): number {
+  const round = rosterIndex + 1;
+  if (round % 2 === 1) return (round - 1) * TEAMS + userPick;
+  return round * TEAMS - userPick + 1;
 }
 
 interface PosGroup {
@@ -26,13 +36,31 @@ function formatCapital(val: number): string {
   return String(val);
 }
 
-export default function CapitalChart({ roster }: Props) {
+function pickForCapital(p: RosterPick, rosterIndex: number, userPickNumber: number, useAdp: boolean): number {
+  if (useAdp && p.adp > 0) return Math.round(p.adp);
+  return overallFromUserPick(rosterIndex, userPickNumber);
+}
+
+export default function CapitalChart({ roster, userPickNumber, useAdp }: Props) {
+  console.group('[DraftHelper] CapitalChart');
+  console.log(`User pick number: ${userPickNumber}, mode: ${useAdp ? 'ADP' : 'Actual'}`);
+  console.log('Full roster:', JSON.parse(JSON.stringify(roster)));
   const groups: PosGroup[] = POS_GROUPS.map((g) => {
     const players = roster.filter((p) => g.pos.includes(p.position));
+    console.log(`${g.label} players (${players.length}):`, players.map(p => p.name).join(', '));
+    const details: string[] = [];
     const capital = players.reduce(
-      (sum, _, i) => sum + draftCapital(i + 1),
+      (sum, p, idx) => {
+        const rosterIndex = roster.indexOf(p);
+        const pk = pickForCapital(p, rosterIndex, userPickNumber, useAdp);
+        const cap = draftCapital(pk);
+        details.push(`${p.name}: ${useAdp ? `adp=#${p.adp}` : `snakeOverall=#${pk}`} -> $${cap}`);
+        return sum + cap;
+      },
       0
     );
+    details.forEach(d => console.log(`  ${d}`));
+    console.log(`  total: $${capital}, max: $${g.maxCapital}`);
     return {
       label: g.label,
       capital,
@@ -41,10 +69,23 @@ export default function CapitalChart({ roster }: Props) {
       maxCapital: g.maxCapital,
     };
   });
+  console.groupEnd();
+
+  const missingAdpCount = useAdp ? roster.filter(p => p.adp <= 0).length : 0;
 
   return (
     <div style={styles.container}>
-      <h3 style={styles.heading}>Draft Capital</h3>
+      <h3 style={styles.heading}>
+        Draft Capital
+        <span style={{ fontSize: 10, color: '#888', fontWeight: 400, marginLeft: 8 }}>
+          ({useAdp ? 'ADP' : 'Actual'})
+        </span>
+      </h3>
+      {missingAdpCount > 0 && (
+        <div style={{ fontSize: 10, color: '#f0a030', marginBottom: 6 }}>
+          ⚠ {missingAdpCount} player{missingAdpCount > 1 ? 's' : ''} missing ADP (using actual pick)
+        </div>
+      )}
       {groups.map((g) => {
         const pct = (g.capital / g.maxCapital) * 100;
         return (
@@ -97,8 +138,12 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#2a2a4a',
     borderRadius: 8,
     position: 'relative',
+    overflow: 'hidden',
   },
   barFill: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
     height: '100%',
     borderRadius: 8,
     transition: 'width 0.3s',

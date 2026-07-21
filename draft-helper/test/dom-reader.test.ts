@@ -13,8 +13,7 @@ describe('readRoster', () => {
     expect(roster[0].name).toBe('Ja\'Marr Chase');
     expect(roster[0].position).toBe('WR');
     expect(roster[0].byeWeek).toBe(6);
-    expect(roster[0].round).toBe(1);
-    expect(roster[0].pick).toBe(3);
+    expect(roster[0].overallPick).toBe(1);
   });
 });
 
