@@ -1,0 +1,162 @@
+{
+  "ARI": {
+    "week15": "NYJ",
+    "week16": "NO",
+    "week17": "LV"
+  },
+  "ATL": {
+    "week15": "WAS",
+    "week16": "TB",
+    "week17": "NO"
+  },
+  "BAL": {
+    "week15": "PIT",
+    "week16": "CLE",
+    "week17": "CIN"
+  },
+  "BUF": {
+    "week15": "CHI",
+    "week16": "DEN",
+    "week17": "MIA"
+  },
+  "CAR": {
+    "week15": "CIN",
+    "week16": "PIT",
+    "week17": "SEA"
+  },
+  "CHI": {
+    "week15": "BUF",
+    "week16": "GB",
+    "week17": "DET"
+  },
+  "CIN": {
+    "week15": "CAR",
+    "week16": "IND",
+    "week17": "BAL"
+  },
+  "CLE": {
+    "week15": "NYG",
+    "week16": "BAL",
+    "week17": "IND"
+  },
+  "DAL": {
+    "week15": "LAR",
+    "week16": "JAX",
+    "week17": "NYG"
+  },
+  "DEN": {
+    "week15": "LV",
+    "week16": "BUF",
+    "week17": "NE"
+  },
+  "DET": {
+    "week15": "MIN",
+    "week16": "NYG",
+    "week17": "CHI"
+  },
+  "GB": {
+    "week15": "MIA",
+    "week16": "CHI",
+    "week17": "HOU"
+  },
+  "HOU": {
+    "week15": "JAX",
+    "week16": "PHI",
+    "week17": "GB"
+  },
+  "IND": {
+    "week15": "TEN",
+    "week16": "CIN",
+    "week17": "CLE"
+  },
+  "JAC": {
+    "week15": "HOU",
+    "week16": "DAL",
+    "week17": "WAS"
+  },
+  "KC": {
+    "week15": "NE",
+    "week16": "SF",
+    "week17": "LAC"
+  },
+  "LV": {
+    "week15": "DEN",
+    "week16": "TEN",
+    "week17": "ARI"
+  },
+  "LAC": {
+    "week15": "SF",
+    "week16": "MIA",
+    "week17": "KC"
+  },
+  "LAR": {
+    "week15": "DAL",
+    "week16": "SEA",
+    "week17": "TB"
+  },
+  "MIA": {
+    "week15": "GB",
+    "week16": "LAC",
+    "week17": "BUF"
+  },
+  "MIN": {
+    "week15": "DET",
+    "week16": "WAS",
+    "week17": "NYJ"
+  },
+  "NE": {
+    "week15": "KC",
+    "week16": "NYJ",
+    "week17": "DEN"
+  },
+  "NO": {
+    "week15": "TB",
+    "week16": "ARI",
+    "week17": "ATL"
+  },
+  "NYG": {
+    "week15": "CLE",
+    "week16": "DET",
+    "week17": "DAL"
+  },
+  "NYJ": {
+    "week15": "ARI",
+    "week16": "NE",
+    "week17": "MIN"
+  },
+  "PHI": {
+    "week15": "SEA",
+    "week16": "HOU",
+    "week17": "SF"
+  },
+  "PIT": {
+    "week15": "BAL",
+    "week16": "CAR",
+    "week17": "TEN"
+  },
+  "SF": {
+    "week15": "LAC",
+    "week16": "KC",
+    "week17": "PHI"
+  },
+  "SEA": {
+    "week15": "PHI",
+    "week16": "LAR",
+    "week17": "CAR"
+  },
+  "TB": {
+    "week15": "NO",
+    "week16": "ATL",
+    "week17": "LAR"
+  },
+  "TEN": {
+    "week15": "IND",
+    "week16": "LV",
+    "week17": "PIT"
+  },
+  "WAS": {
+    "week15": "ATL",
+    "week16": "MIN",
+    "week17": "JAX"
+  }
+}
