@@ -1,3 +1,4 @@
+import { Option } from "effect";
 import scheduleData from './schedule.json';
 
 export interface OpponentRow {
@@ -8,6 +9,6 @@ export interface OpponentRow {
 
 const schedule = scheduleData as Record<string, OpponentRow>;
 
-export function getOpponents(teamAbbr: string): OpponentRow | null {
-  return schedule[teamAbbr] ?? null;
+export function getOpponents(teamAbbr: string): Option.Option<OpponentRow> {
+  return Option.fromNullable(schedule[teamAbbr]);
 }

@@ -1,6 +1,8 @@
 import React from 'react';
+import { Option } from "effect";
 import type { RosterPick } from '../content/types';
 import { getOpponents } from '../data/schedule';
+import type { OpponentRow } from '../data/schedule';
 
 interface Props {
   roster: RosterPick[];
@@ -26,15 +28,20 @@ export default function OpponentsTable({ roster }: Props) {
           </thead>
           <tbody>
             {first8.map((pick, i) => {
-              const opps = pick.team ? getOpponents(pick.team) : null;
+              const opps = pick.team
+                ? getOpponents(pick.team)
+                : Option.none<OpponentRow>();
+              const week15 = Option.isSome(opps) ? opps.value.week15 : '—';
+              const week16 = Option.isSome(opps) ? opps.value.week16 : '—';
+              const week17 = Option.isSome(opps) ? opps.value.week17 : '—';
               return (
                 <tr key={i}>
                   <td style={styles.td}>
                     {pick.name} <span style={styles.pos}>({pick.position})</span>
                   </td>
-                  <td style={styles.td}>{opps?.week15 ?? '—'}</td>
-                  <td style={styles.td}>{opps?.week16 ?? '—'}</td>
-                  <td style={styles.td}>{opps?.week17 ?? '—'}</td>
+                  <td style={styles.td}>{week15}</td>
+                  <td style={styles.td}>{week16}</td>
+                  <td style={styles.td}>{week17}</td>
                 </tr>
               );
             })}

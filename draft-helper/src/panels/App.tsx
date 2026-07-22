@@ -1,60 +1,46 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Effect } from "effect";
 import type { RosterPick, Player } from '../content/types';
-import { readRoster, readAvailablePlayers } from '../content/dom-reader';
-import { annotateStackTargets } from '../content/stack-annotator';
-import { RosterCache } from '../content/roster-cache';
-import { AdpStore } from '../content/adp-store';
+import { runRefresh } from '../content/pipeline';
 import CapitalChart from './CapitalChart';
 import OpponentsTable from './OpponentsTable';
 
-const adpStore = new AdpStore();
-
 export default function App() {
-  const [roster, setRoster] = useState<RosterPick[]>([]);
-  const [available, setAvailable] = useState<Player[]>([]);
+  const [roster, setRoster] = useState<ReadonlyArray<RosterPick>>([]);
+  const [available, setAvailable] = useState<ReadonlyArray<Player>>([]);
   const [loadCount, setLoadCount] = useState(0);
   const [userPickNumber, setUserPickNumber] = useState(1);
   const [useAdpCapital, setUseAdpCapital] = useState(false);
-  const observerRef = useRef<MutationObserver | null>(null);
-  const rosterCacheRef = useRef(new RosterCache());
-
-  function refresh() {
-    console.group('[DraftHelper] App refresh');
-    const r = readRoster();
-    const a = readAvailablePlayers();
-
-    // Capture ADP from available players and persist it
-    adpStore.update(a);
-
-    // Accumulate roster picks into cache (survives virtual scrolling), filling ADP from store
-    rosterCacheRef.current.update(r, (name, team, pos) => adpStore.get(name, team, pos));
-    const cached = rosterCacheRef.current.getAll();
-
-    // Disconnect observer before DOM manipulation to prevent infinite loop
-    observerRef.current?.disconnect();
-
-    annotateStackTargets(cached, a);
-
-    // Reconnect observer
-    if (observerRef.current) {
-      observerRef.current.observe(document.body, { childList: true, subtree: true });
-    }
-
-    console.log(`roster: ${r.length} (cached: ${cached.length}), available: ${a.length}`);
-    console.groupEnd();
-    setRoster(cached);
-    setAvailable(a);
-    setLoadCount((c) => c + 1);
-  }
 
   useEffect(() => {
-    adpStore.load().then(refresh);
-    const observer = new MutationObserver(() => {
-      refresh();
-    });
+    let running = false;
+    let disconnected = false;
+
+    const handler = () => {
+      if (running || disconnected) return;
+      running = true;
+      Effect.runPromise(runRefresh).then(
+        (data) => {
+          running = false;
+          if (disconnected) return;
+          setRoster(data.roster);
+          setAvailable(data.available);
+          setLoadCount((c) => c + 1);
+        },
+        () => {
+          running = false;
+        },
+      );
+    };
+
+    const observer = new MutationObserver(handler);
     observer.observe(document.body, { childList: true, subtree: true });
-    observerRef.current = observer;
-    return () => observer.disconnect();
+    handler();
+
+    return () => {
+      disconnected = true;
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -83,8 +69,8 @@ export default function App() {
           ADP capital
         </label>
       </div>
-      <CapitalChart roster={roster} userPickNumber={userPickNumber} useAdp={useAdpCapital} />
-      <OpponentsTable roster={roster} />
+      <CapitalChart roster={roster as RosterPick[]} userPickNumber={userPickNumber} useAdp={useAdpCapital} />
+      <OpponentsTable roster={roster as RosterPick[]} />
     </div>
   );
 }

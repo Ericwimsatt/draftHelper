@@ -1,36 +1,43 @@
-export type Position = 'QB' | 'RB' | 'WR' | 'TE';
+import { Schema } from "@effect/schema";
 
-export interface Player {
-  rank: number;
-  name: string;
-  position: Position;
-  team: string;
-  adp: number;
-  byeWeek: number;
-  isDrafted: boolean;
-}
+export const Position = Schema.Literal("QB", "RB", "WR", "TE");
+export type Position = Schema.Schema.Type<typeof Position>;
 
-export interface RosterPick {
-  round: number;
-  pick: number;
-  overallPick: number;
-  name: string;
-  position: Position;
-  team: string;
-  byeWeek: number;
-  adp: number;
-}
+export const Player = Schema.Struct({
+  rank: Schema.Number,
+  name: Schema.String,
+  position: Position,
+  team: Schema.String,
+  adp: Schema.Number,
+  byeWeek: Schema.Number,
+  isDrafted: Schema.Boolean,
+});
+export type Player = Schema.Schema.Type<typeof Player>;
 
-export interface StackTarget {
-  qb: Player;
-  rostered: Player;
-  team: string;
-  qbAdp: number;
-}
+export const RosterPick = Schema.Struct({
+  round: Schema.Number,
+  pick: Schema.Number,
+  overallPick: Schema.Number,
+  name: Schema.String,
+  position: Position,
+  team: Schema.String,
+  byeWeek: Schema.Number,
+  adp: Schema.Number,
+});
+export type RosterPick = Schema.Schema.Type<typeof RosterPick>;
 
-export interface DraftState {
-  roster: RosterPick[];
-  available: Player[];
-  userOnClock: boolean;
-  currentPick: number;
-}
+export const StackTarget = Schema.Struct({
+  qb: Player,
+  rostered: Player,
+  team: Schema.String,
+  qbAdp: Schema.Number,
+});
+export type StackTarget = Schema.Schema.Type<typeof StackTarget>;
+
+export const DraftState = Schema.Struct({
+  roster: Schema.Array(RosterPick),
+  available: Schema.Array(Player),
+  userOnClock: Schema.Boolean,
+  currentPick: Schema.Number,
+});
+export type DraftState = Schema.Schema.Type<typeof DraftState>;
