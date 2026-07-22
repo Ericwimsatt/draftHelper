@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "generate-rankings": "node scripts/generate-rankings.mjs",
     "dev": "vite build --watch",
-    "build": "tsc && vite build",
+    "build": "npm run generate-rankings && tsc && vite build",
     "test": "vitest run",
     "test:watch": "vitest"
   },

@@ -30,7 +30,7 @@ export default function OpponentsTable({ roster }: Props) {
               return (
                 <tr key={i}>
                   <td style={styles.td}>
-                    {pick.name} <span style={styles.pos}>({pick.position})</span>
+                    {pick.name} <span style={styles.pos}>{pick.team} ({pick.position})</span>
                   </td>
                   <td style={styles.td}>{opps?.week15 ?? '—'}</td>
                   <td style={styles.td}>{opps?.week16 ?? '—'}</td>

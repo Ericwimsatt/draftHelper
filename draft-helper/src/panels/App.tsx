@@ -4,8 +4,10 @@ import { readRoster, readAvailablePlayers } from '../content/dom-reader';
 import { annotateStackTargets } from '../content/stack-annotator';
 import { RosterCache } from '../content/roster-cache';
 import { AdpStore } from '../content/adp-store';
+import { getEtrEntry } from '../data/etr-rankings';
 import CapitalChart from './CapitalChart';
 import OpponentsTable from './OpponentsTable';
+import AvailablePlayersTable from './AvailablePlayersTable';
 
 const adpStore = new AdpStore();
 
@@ -83,6 +85,7 @@ export default function App() {
           ADP capital
         </label>
       </div>
+      <AvailablePlayersTable available={available} getEtr={getEtrEntry} />
       <CapitalChart roster={roster} userPickNumber={userPickNumber} useAdp={useAdpCapital} />
       <OpponentsTable roster={roster} />
     </div>
