@@ -77,7 +77,7 @@ export default function CapitalChart({ roster, userPickNumber, useAdp }: Props) 
     <div style={styles.container}>
       <h3 style={styles.heading}>
         Draft Capital
-        <span style={{ fontSize: 10, color: '#888', fontWeight: 400, marginLeft: 8 }}>
+        <span style={{ fontSize: 10, color: '#999', fontWeight: 400, marginLeft: 8 }}>
           ({useAdp ? 'ADP' : 'Actual'})
         </span>
       </h3>
@@ -116,7 +116,7 @@ const styles: Record<string, React.CSSProperties> = {
   heading: {
     fontSize: 14,
     fontWeight: 700,
-    color: '#ffd700',
+    color: '#e8e8e8',
     marginBottom: 8,
   },
   row: {
@@ -135,7 +135,7 @@ const styles: Record<string, React.CSSProperties> = {
   barBg: {
     flex: 1,
     height: 16,
-    backgroundColor: '#2a2a4a',
+    backgroundColor: '#333',
     borderRadius: 8,
     position: 'relative',
     overflow: 'hidden',
@@ -160,7 +160,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: 20,
     textAlign: 'center',
     color: '#aaa',
-    backgroundColor: '#333',
+    backgroundColor: '#444',
     borderRadius: 10,
     padding: '0 4px',
     fontSize: 11,

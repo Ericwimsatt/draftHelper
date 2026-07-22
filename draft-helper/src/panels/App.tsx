@@ -53,7 +53,7 @@ export default function App() {
 
   return (
     <div>
-      <div style={{ fontSize: 11, color: '#888', paddingBottom: 4 }}>
+      <div style={{ fontSize: 11, color: '#999', paddingBottom: 4 }}>
         Draft: {draftId ?? '—'} | Loaded: {loadCount} | Roster: {roster.length} | Available: {available.length}
       </div>
       <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}>
@@ -64,9 +64,9 @@ export default function App() {
           max={12}
           value={userPickNumber}
           onChange={(e) => setUserPickNumber(Math.max(1, Math.min(12, parseInt(e.target.value, 10) || 1)))}
-          style={{ width: 40, padding: '2px 4px', borderRadius: 4, border: '1px solid #555', background: '#1a1a3a', color: '#fff', fontSize: 12, textAlign: 'center' }}
+          style={{ width: 40, padding: '2px 4px', borderRadius: 4, border: '1px solid #555', background: '#2a2a2a', color: '#fff', fontSize: 12, textAlign: 'center' }}
         />
-        <span style={{ color: '#888', fontSize: 10 }}>/ 12 teams</span>
+        <span style={{ color: '#999', fontSize: 10 }}>/ 12 teams</span>
         <label style={{ marginLeft: 12, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', color: '#ccc' }}>
           <input
             type="checkbox"
@@ -78,7 +78,7 @@ export default function App() {
         </label>
       </div>
       <CapitalChart roster={roster as RosterPick[]} userPickNumber={userPickNumber} useAdp={useAdpCapital} />
-      <OpponentsTable roster={roster as RosterPick[]} />
+      <OpponentsTable roster={roster as RosterPick[]} available={available as Player[]} />
     </div>
   );
 }

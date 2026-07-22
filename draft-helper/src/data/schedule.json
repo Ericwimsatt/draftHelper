@@ -158,5 +158,10 @@
     "week15": "ATL",
     "week16": "MIN",
     "week17": "JAX"
+  },
+  "JAX": {
+    "week15": "HOU",
+    "week16": "DAL",
+    "week17": "WAS"
   }
 }

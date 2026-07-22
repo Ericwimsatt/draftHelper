@@ -4,10 +4,22 @@ import App from '../panels/App';
 
 const ROOT_ID = 'draft-helper-root';
 
+function injectPageStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    [class*="SnakeDraft_snake-draft-inner-container"] {
+      max-width: none !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 function inject() {
   if (document.getElementById(ROOT_ID)) return;
 
   console.log('[DraftHelper] inject() called');
+
+  injectPageStyles();
 
   const host = document.createElement('div');
   host.id = ROOT_ID;
@@ -45,7 +57,7 @@ function inject() {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 13px;
       color: #e0e0e0;
-      background: #1a1a2e;
+      background: #1e1e1e;
       border-radius: 8px;
       padding: 12px;
       margin: 8px 0;

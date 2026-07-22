@@ -8,28 +8,34 @@ export const annotateStackTargets = (
   Effect.sync(() => {
     document.querySelectorAll('.dh-stack-badge').forEach(el => el.remove());
 
-    const rosterByTeam = new Map<string, { skill: string[]; qb: string[] }>();
+    const rosterByTeam = new Map<string, { qb: string[]; wr: string[]; te: string[]; rb: string[] }>();
     for (const pick of roster) {
       if (!pick.team) continue;
       let entry = rosterByTeam.get(pick.team);
       if (!entry) {
-        entry = { skill: [], qb: [] };
+        entry = { qb: [], wr: [], te: [], rb: [] };
         rosterByTeam.set(pick.team, entry);
       }
       if (pick.position === 'QB') {
         entry.qb.push(pick.name);
-      } else if (pick.position === 'RB' || pick.position === 'WR' || pick.position === 'TE') {
-        entry.skill.push(pick.name);
+      } else if (pick.position === 'WR') {
+        entry.wr.push(pick.name);
+      } else if (pick.position === 'TE') {
+        entry.te.push(pick.name);
+      } else if (pick.position === 'RB') {
+        entry.rb.push(pick.name);
       }
     }
 
     if (rosterByTeam.size === 0) return;
 
     const teamLabels = new Map<string, string>();
+    const order: Array<'qb' | 'wr' | 'te' | 'rb'> = ['qb', 'wr', 'te', 'rb'];
     for (const [team, entry] of rosterByTeam) {
       const parts: string[] = [];
-      if (entry.skill.length > 0) parts.push(entry.skill.join(', '));
-      if (entry.qb.length > 0) parts.push(entry.qb.join(', '));
+      for (const key of order) {
+        if (entry[key].length > 0) parts.push(entry[key].join(', '));
+      }
       if (parts.length > 0) teamLabels.set(team, `(${parts.join(', ')})`);
     }
 
@@ -68,14 +74,16 @@ export const annotateStackTargets = (
       const label = teamLabels.get(team);
       if (!label) continue;
 
-      const lastCell = cells[cells.length - 1];
+      const container = cells[2]?.querySelector('.PlayerCell_player-details-container');
+      if (!container) continue;
+
       const badge = document.createElement('span');
       badge.className = 'dh-stack-badge';
       badge.textContent = '\u00A0' + label;
       badge.setAttribute('style',
         'color:#4fc3f7;font-size:11px;white-space:nowrap;margin-left:4px;'
       );
-      lastCell.appendChild(badge);
+      container.appendChild(badge);
       annotated++;
     }
 

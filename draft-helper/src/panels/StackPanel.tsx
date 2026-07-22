@@ -40,11 +40,11 @@ const styles: Record<string, React.CSSProperties> = {
   heading: {
     fontSize: 14,
     fontWeight: 700,
-    color: '#ffd700',
+        color: '#e8e8e8',
     marginBottom: 8,
   },
   empty: {
-    color: '#888',
+    color: '#999',
     fontSize: 12,
   },
   row: {
@@ -53,7 +53,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 6,
     padding: '4px 0',
     fontSize: 12,
-    borderBottom: '1px solid #2a2a4a',
+    borderBottom: '1px solid #333',
   },
   qb: {
     color: '#4fc3f7',

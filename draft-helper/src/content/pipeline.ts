@@ -2,6 +2,7 @@ import { Effect, Layer } from "effect";
 import type { Player, RosterPick } from "./types";
 import { readRoster, readAvailablePlayers } from "./dom-reader";
 import { annotateStackTargets } from "./stack-annotator";
+import { annotateExternalRankings } from "./ranking-annotator";
 import { extractDraftId } from "./draft-id";
 import { AdpStore, AdpStoreLive } from "./adp-store";
 import { RosterCache, RosterCacheLive } from "./roster-cache";
@@ -33,6 +34,7 @@ const refresh = Effect.gen(function*() {
   const cached = yield* rosterCache.getAll;
 
   yield* annotateStackTargets(cached, available);
+  yield* annotateExternalRankings;
   return { draftId, roster: cached, available } as const;
 });
 
