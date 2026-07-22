@@ -8,6 +8,7 @@ import OpponentsTable from './OpponentsTable';
 export default function App() {
   const [roster, setRoster] = useState<ReadonlyArray<RosterPick>>([]);
   const [available, setAvailable] = useState<ReadonlyArray<Player>>([]);
+  const [draftId, setDraftId] = useState<string | null>(null);
   const [loadCount, setLoadCount] = useState(0);
   const [userPickNumber, setUserPickNumber] = useState(1);
   const [useAdpCapital, setUseAdpCapital] = useState(false);
@@ -15,6 +16,7 @@ export default function App() {
   useEffect(() => {
     let running = false;
     let disconnected = false;
+    let currentDraftId: string | null = null;
 
     const handler = () => {
       if (running || disconnected) return;
@@ -23,6 +25,12 @@ export default function App() {
         (data) => {
           running = false;
           if (disconnected) return;
+          if (currentDraftId !== null && data.draftId !== currentDraftId) {
+            setRoster([]);
+            setAvailable([]);
+          }
+          currentDraftId = data.draftId;
+          setDraftId(data.draftId);
           setRoster(data.roster);
           setAvailable(data.available);
           setLoadCount((c) => c + 1);
@@ -46,7 +54,7 @@ export default function App() {
   return (
     <div>
       <div style={{ fontSize: 11, color: '#888', paddingBottom: 4 }}>
-        Loaded: {loadCount} | Roster: {roster.length} | Available: {available.length}
+        Draft: {draftId ?? '—'} | Loaded: {loadCount} | Roster: {roster.length} | Available: {available.length}
       </div>
       <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}>
         <label style={{ color: '#ccc' }}>Your pick #:</label>
